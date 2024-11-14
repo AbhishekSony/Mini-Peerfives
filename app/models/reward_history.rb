@@ -1,0 +1,2 @@
+class RewardHistory < ApplicationRecord
+end
