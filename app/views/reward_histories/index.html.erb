@@ -1,2 +1,18 @@
-<h1>RewardHistories#index</h1>
-<p>Find me in app/views/reward_histories/index.html.erb</p>
+<h1>Reward History</h1>
+<p>Rewards Balance: <%= @user.rewards_balance %></p>
+<table>
+  <tr>
+    <th>#</th>
+    <th>Date-Time</th>
+    <th>Rewards Received</th>
+    <th>User Name</th>
+  </tr>
+  <% @user.received_rewards.each_with_index do |reward, index| %>
+    <tr>
+      <td><%= index + 1 %></td>
+      <td><%= reward.created_at %></td>
+      <td><%= reward.points %></td>
+      <td><%= reward.giver.name %></td> <!-- Show giver's name -->
+    </tr>
+  <% end %>
+</table>
