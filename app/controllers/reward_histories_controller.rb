@@ -1,14 +1,9 @@
-# frozen_string_literal: true
-
 class RewardHistoriesController < ApplicationController
   before_action :set_user, only: %i[index new create]
   before_action :set_reward_history, only: :destroy
 
   def index
     @rewards = @user.given_rewards
-    return unless @rewards.empty?
-
-    redirect_to rewards_user_path(@user)
   end
 
   def new
