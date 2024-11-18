@@ -1,5 +1,17 @@
-<h1>Edit User</h1>
+<h1>User Details</h1>
 
-<%= render 'form', user: @user %>
+<%= form_with(model: @user, url: user_path(@user), method: :patch, local: true) do |form| %>
+  <%= form.label :name %>
+  <%= form.text_field :name %>
 
-<%= link_to 'Back to Users', users_path %>
+  <%= form.submit 'Save' %>
+<% end %>
+
+<p>
+  <%= link_to "P5 Balance: #{@user.p5_balance}", p5_user_path(@user) %>
+</p>
+<p>
+  <%= link_to "Rewards Balance: #{@user.reward_balance}", rewards_user_path(@user) %>
+</p>
+
+<%= link_to 'Back to Users List', users_path %>

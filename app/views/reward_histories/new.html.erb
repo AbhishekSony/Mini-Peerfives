@@ -2,11 +2,11 @@
 
 <%= form_with(model: @reward_history, url: user_reward_histories_path(@user), local: true) do |f| %>
   <div>
-    <%= f.label :receiver_id, 'Select User' %>
+    <%= f.label :receiver_id, 'Select Receiver' %>
     <%= f.select :receiver_id, options_from_collection_for_select(@other_users, :id, :name), prompt: 'Choose a user' %>
   </div>
   <div>
-    <%= f.label :points, 'Points to Give' %>
+    <%= f.label :points, 'Points to Reward' %>
     <%= f.number_field :points, min: 1, max: @user.p5_balance, value: 1 %>
   </div>
   <p>P5 Balance: <%= @user.p5_balance %></p>

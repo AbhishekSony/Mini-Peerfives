@@ -1,0 +1,6 @@
+<h1>P5 Balance</h1>
+<p><strong>User:</strong> <%= @user.name %></p>
+<p><strong>P5 Balance:</strong> <%= @user.p5_balance %></p>
+<td><%= link_to 'Send Rewards', new_user_reward_history_path(@user), class: 'button' %></td>
+
+<%= link_to 'Back to User', user_path(@user) %>

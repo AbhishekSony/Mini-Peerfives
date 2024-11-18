@@ -13,9 +13,8 @@
       <td><%= index + 1 %></td>
       <td><%= user.name %></td>
       <td><%= user.p5_balance %></td>
-      <td><%= user.rewards_balance %></td>
+      <td><%= user.reward_balance %></td>
       <td><%= link_to 'Edit', edit_user_path(user) %></td>
-      <td><%= link_to 'Transfer P5 Points', new_user_reward_history_path(user), class: 'button' %></td>
     </tr>
   <% end %>
 </table>

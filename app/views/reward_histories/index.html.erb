@@ -1,5 +1,5 @@
 <h1>Reward History</h1>
-<p>Rewards Balance: <%= @user.rewards_balance %></p>
+<p>Rewards Balance: <%= @user.reward_balance %></p>
 <table>
   <tr>
     <th>#</th>
@@ -14,5 +14,30 @@
       <td><%= reward.points %></td>
       <td><%= reward.giver.name %></td> <!-- Show giver's name -->
     </tr>
+  <% end %>
+</table>
+
+<table>
+  <tr>
+    <th>#</th>
+    <th>Date-Time</th>
+    <th>Rewards Send</th>
+    <th>User Name</th>
+  </tr>
+  <% @user.given_rewards.each_with_index do |reward, index| %>
+    <tr>
+      <td><%= index + 1 %></td>
+      <td><%= reward.created_at %></td>
+      <td><%= reward.points %></td>
+      <td><%= reward.receiver.name %></td> <!-- Show giver's name -->
+      <td>
+        <%= button_to 'Revoke Rewards',
+                    user_reward_history_path(@user, reward),
+                    method: :delete,
+                    data: { confirm: 'Are you sure you want to revoke this reward?' },
+                    class: 'button btn btn-danger' %>
+      </td>
+    </tr>
+
   <% end %>
 </table>

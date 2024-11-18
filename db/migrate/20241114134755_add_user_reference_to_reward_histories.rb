@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddUserReferenceToRewardHistories < ActiveRecord::Migration[7.1]
   def change
     add_reference :reward_histories, :user, null: true, foreign_key: true

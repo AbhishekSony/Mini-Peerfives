@@ -1,48 +1,53 @@
+# frozen_string_literal: true
+
 class RewardHistoriesController < ApplicationController
+  before_action :set_user, only: %i[index new create]
+  before_action :set_reward_history, only: :destroy
+
   def index
-    @user = User.find(params[:user_id])
     @rewards = @user.given_rewards
+    return unless @rewards.empty?
+
+    redirect_to rewards_user_path(@user)
   end
 
   def new
-    @user = User.find(params[:user_id])
     @other_users = User.where.not(id: @user.id)
     @reward_history = RewardHistory.new
   end
 
   def create
-    @user = User.find(params[:user_id])
-    receiver = User.find(params[:reward_history][:receiver_id])
-    points = params[:reward_history][:points].to_i
+    @reward_history = @user.given_rewards.build(reward_history_params)
 
-    if @user.p5_balance >= points
-      @reward_history = RewardHistory.new(given_by: @user.id, given_to: receiver.id, points: points)
-
-      if @reward_history.save
-        @user.update!(p5_balance: (@user.p5_balance - points).to_i)
-        receiver.update!(rewards_balance: ((receiver.rewards_balance || 0) + points).to_i)
-        redirect_to user_reward_histories_path(@user), notice: 'Reward given successfully'
-      else
-        render :new
-      end
-    else
+    if @user.p5_balance < @reward_history.points
       redirect_to new_user_reward_history_path(@user), alert: 'Not enough P5 points'
+      return
     end
-  rescue ActiveRecord::RecordInvalid => e
-    redirect_to user_reward_histories_path(@user), alert: "Error: #{e.message}"
+
+    if @reward_history.save
+      redirect_to rewards_user_path(@user), notice: 'Reward given successfully'
+    else
+      render :new, alert: 'Error: Unable to give reward'
+    end
   end
 
   def destroy
-    @reward_history = RewardHistory.find(params[:id])
-    giver = User.find(@reward_history.given_by)
-    receiver = User.find(@reward_history.given_to)
-
-    giver.p5_balance += @reward_history.points
-    receiver.reward_balance -= @reward_history.points
-    giver.save
-    receiver.save
-
     @reward_history.destroy
-    redirect_to user_rewards_path(giver)
+    redirect_to p5_user_path(@reward_history.giver),
+                notice: 'Reward history deleted successfully'
+  end
+
+  private
+
+  def set_user
+    @user = User.find(params[:user_id] || params[:id])
+  end
+
+  def set_reward_history
+    @reward_history = RewardHistory.find(params[:id])
+  end
+
+  def reward_history_params
+    params.require(:reward_history).permit(:points).merge(given_to: params[:reward_history][:receiver_id])
   end
 end
