@@ -53,7 +53,6 @@ group :development, :test do
   gem 'faker'
   gem 'rails-controller-testing'
   gem 'rspec-rails', '~> 6.0'
-  gem 'rubocop', require: false
   gem 'shoulda-matchers', '~> 5.0'
 end
 
